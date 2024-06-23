@@ -13,16 +13,16 @@ public class PoolingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pools = new List<GameObject>[prefabs.Length];
-
-        for(int i = 0; i < pools.Length; i++)
-        {
-            pools[i] = new List<GameObject>();
-        }
+        init();
     }
 
     public GameObject Get(int index)
     {
+        if(pools == null)
+        {
+            init();
+        }
+
         GameObject select = null;
 
         // 쉬고 있는 GameObject가 있는 지 확인
@@ -46,5 +46,21 @@ public class PoolingManager : MonoBehaviour
         }
 
         return select;
+    }
+
+    void init()
+    {
+        lock (new object())
+        {
+            if (pools == null)
+            {
+                pools = new List<GameObject>[prefabs.Length];
+
+                for (int i = 0; i < pools.Length; i++)
+                {
+                    pools[i] = new List<GameObject>();
+                }
+            }
+        }
     }
 }

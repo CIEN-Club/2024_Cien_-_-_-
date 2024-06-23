@@ -13,21 +13,21 @@ public class Reposition : MonoBehaviour
 
         Vector3 playerPos = GameManager.Instance.player.transform.position;
         Vector3 myPos = transform.position;
-        float diffX = Mathf.Abs(playerPos.x - myPos.x);
-        float diffY = Mathf.Abs(playerPos.y - myPos.y);
+        float diffX = playerPos.x - myPos.x;
+        float diffY = playerPos.y - myPos.y;
 
         Vector3 playerDir = GameManager.Instance.player.GetInputVec();
-        float dirX = playerDir.x < 0 ? -1 : 1;
-        float dirY = playerDir.y < 0 ? -1 : 1;
+        float dirX = diffX < 0 ? -1 : 1;
+        float dirY = diffY < 0 ? -1 : 1;
 
         switch (transform.tag)
         {
             case "Ground":
-                if(diffX > diffY)
+                if(Mathf.Abs(diffX) > Mathf.Abs(diffY))
                 {
                     transform.Translate(Vector3.right * dirX * 40);
                 }
-                else if (diffX < diffY)
+                else if (Mathf.Abs(diffX) < Mathf.Abs(diffY))
                 {
                     transform.Translate(Vector3.up * dirY * 40);
                 }
